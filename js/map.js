@@ -134,7 +134,7 @@ var createMapCard = function(card){
   address.textContent = card.offer.address;
   price.innerHTML = card.offer.price + '&#x20bd;/ночь';
   typeOfHousing.textContent = (card.offer.type === 'flat') ? 'Квартира' :
-                              (card.offer.type === 'flat') ? 'Дом' :
+                              (card.offer.type === 'house') ? 'Дом' :
                               'Бунгало';
   quantity.textContent =  ((card.offer.rooms > 1) && (card.offer.quests > 1)) ?
         card.offer.rooms + ' комнаты для ' + card.offer.quests + ' гостей' :
@@ -233,4 +233,41 @@ for(var i = 0; i < popupClose.length; i++){
   onButtonPopupCloseClick(button, i);
 };
 
+var timeIn = document.querySelector('#timein');
+var timeOut = document.querySelector('#timeout');
+var priceInput = document.querySelector('#price');
+var typeHousing = document.querySelector('#type');
+var roomNumber = document.querySelector('#room_number');
+var capacity = document.querySelector('#capacity');
 
+var onTimeInSelectChange = function(){
+  var index;
+  for(var i = 0; i < timeIn.options.length; i++){
+    if(timeIn.options[i].selected){
+      index = i;
+    }
+  }
+  timeOut.options[index].selected = true;
+};
+
+timeIn.addEventListener('change', onTimeInSelectChange);
+
+var onPriceInput = function(){
+  (priceInput.value < 1000) ? typeHousing.options[1].selected = true :
+  ((priceInput.value > 1000) && (priceInput.value < 5000)) ? typeHousing.options[0].selected = true :
+  ((priceInput.value > 5000) && (priceInput.value < 10000)) ? typeHousing.options[2].selected = true : typeHousing.options[3].selected = true;
+};
+
+priceInput.addEventListener('input', onPriceInput);
+
+var onRoomNumberChange = function(){
+  roomNumber.options[0].selected ? capacity.options[2].selected = true : 
+  roomNumber.options[1].selected ? capacity.options[1].selected = true : 
+  roomNumber.options[2].selected ? capacity.options[0].selected = true : capacity.options[3].selected = true;
+};
+
+roomNumber.addEventListener('change', onRoomNumberChange);
+
+noticeForm.addEventListener('invalid', function(evt){
+  evt.target.style.boxShadow = '0 0 4px 1px #ff6547';
+}, true);
