@@ -94,6 +94,7 @@
       var x = parseInt(mainMapPin.style.left);
       var y = parseInt(mainMapPin.style.top) + 50;
 
+      // Ограничиваем возможность установки пина по Y от 100 до 500
       if(parseInt(mainMapPin.style.top) < 100){
         y = 150;
         mainMapPin.style.top = 100 + 'px';
@@ -102,6 +103,7 @@
         mainMapPin.style.top = 500 + 'px';
       }
 
+      // Выводим координаты на карте в поле адресса
       var address = document.querySelector('#address');
       address.value = 'x: ' + x + ' , y: ' + y;
 
