@@ -54,4 +54,14 @@
     evt.target.style.boxShadow = '0 0 4px 1px #ff6547';
   }, true);
 
+  window.form.noticeForm.addEventListener('submit', function(evt){
+    window.backend.save(new FormData(window.form.noticeForm), function(response){
+      console.log(response);
+      alert('Данные успешно отправлены');
+    }, function(string){
+      alert(string);
+    });
+    evt.preventDefault();
+  });
+
 })();

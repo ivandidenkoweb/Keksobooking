@@ -1,11 +1,9 @@
 // Модуль для отрисовки пина и взаимодействия с ним
 
 (function(){
-  var mapPinButtonTemplate = document.querySelector('template').content.querySelector('.map__pin');
-  var mapPinsList = document.querySelector('.map__pins');
-
-  // Функция, которая возвращает массив пинов из массива данных data
-  var createMapPins = function(data){
+  // Функция, которая coздает и рисует пины
+  var createAndDrawPins = function(data){
+    var mapPinButtonTemplate = document.querySelector('template').content.querySelector('.map__pin');
     var mapPins = [];
     for(var i = 0; i < data.length; i++){
       var mapPinButton = mapPinButtonTemplate.cloneNode(true);
@@ -16,31 +14,23 @@
       var trueY = data[i].location.y - imageHeight;
       mapPinButton.style.left = trueX + 'px';
       mapPinButton.style.top = trueY + 'px';
+      mapPinButton.style.display = 'none';
       image.setAttribute('src', data[i].author.avatar);
       mapPins.push(mapPinButton);
     };
-    return mapPins
-  };
 
-  var mapPins = createMapPins(window.data);
-
-  // Функция, которая отрисовывает пины mapPins на карте
-  var drawMapPins = function(mapPins){
+    var mapPinsList = document.querySelector('.map__pins');
     var fragment = document.createDocumentFragment();
-    for(var i = 0; i < mapPins.length; i++){
-      fragment.appendChild(mapPins[i]);
+    for(var k = 0; k < mapPins.length; k++){
+      fragment.appendChild(mapPins[k]);
     }
     mapPinsList.appendChild(fragment);
   };
-  drawMapPins(mapPins);
 
-  // Скрываем все пины
-  window.pin = {
-    mapPinCollection : document.querySelectorAll('.map__pin')
-  };
-  
-  for(var i = 1; i < window.pin.mapPinCollection.length; i++){
-    window.pin.mapPinCollection[i].style.display = 'none';
-  };
+  window.backend.load(function(response){
+    createAndDrawPins(response);
+  }, function(string){
+    alert(string);
+  });
 
 })();
